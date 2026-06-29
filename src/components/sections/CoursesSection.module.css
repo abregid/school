@@ -1,0 +1,52 @@
+.section {
+    padding: var(--space-20) var(--space-8);
+    background-color: var(--color-bg-alt);
+}
+
+.inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.heading {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin-bottom: var(--space-10);
+    text-align: center;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+}
+
+.card {
+    background-color: var(--color-bg);
+    border-radius: var(--border-radius);
+    padding: var(--space-8);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-top: 4px solid var(--color-primary);
+}
+
+.cardName {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    margin-bottom: var(--space-1);
+}
+
+.cardNameLT {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-4);
+    font-style: italic;
+}
+
+.cardDescription {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--color-text);
+}

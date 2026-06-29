@@ -1,0 +1,109 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Lietuvių Kalba — home" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - text: Lietuvių Kalba
+      - navigation "Main navigation" [ref=e5]:
+        - list [ref=e6]:
+          - listitem [ref=e7]:
+            - link "Courses" [ref=e8] [cursor=pointer]:
+              - /url: "#courses"
+          - listitem [ref=e9]:
+            - link "Register" [ref=e10] [cursor=pointer]:
+              - /url: "#register"
+  - main [ref=e11]:
+    - region "Lietuvių Kalba" [ref=e12]:
+      - generic [ref=e13]:
+        - heading "Lietuvių Kalba" [level=1] [ref=e14]
+        - paragraph [ref=e15]: Lietuvių Kalba is a dedicated Lithuanian language school offering structured, communicative courses for all proficiency levels. Whether you are taking your very first steps or deepening existing skills, our experienced teachers will guide you through Lithuania's rich linguistic heritage in a welcoming environment.
+        - list "School highlights" [ref=e16]:
+          - listitem [ref=e17]: ✓ Small groups (max 8 students) for personalised attention
+          - listitem [ref=e18]: ✓ Native-speaking teachers with formal linguistics qualifications
+          - listitem [ref=e19]: ✓ Flexible start dates — join a new cohort every month
+          - listitem [ref=e20]: ✓ Curriculum aligned with the Common European Framework (CEFR)
+          - listitem [ref=e21]: ✓ Cultural immersion activities included in every course
+        - link "Register for a Course" [ref=e22] [cursor=pointer]:
+          - /url: "#register"
+    - region "Our Courses" [ref=e23]:
+      - generic [ref=e24]:
+        - heading "Our Courses" [level=2] [ref=e25]
+        - generic [ref=e26]:
+          - article "Beginner" [ref=e27]:
+            - heading "Beginner" [level=3] [ref=e28]
+            - paragraph [ref=e29]: Pradedantysis
+            - paragraph [ref=e30]: Start from zero. Learn the Lithuanian alphabet, basic greetings, everyday vocabulary, and simple sentence structures in a supportive setting.
+          - article "Intermediate" [ref=e31]:
+            - heading "Intermediate" [level=3] [ref=e32]
+            - paragraph [ref=e33]: Pažengęs
+            - paragraph [ref=e34]: Build on your foundations. Expand vocabulary, tackle grammar nuances, and gain confidence in real-life conversations and written communication.
+          - article "Advanced" [ref=e35]:
+            - heading "Advanced" [level=3] [ref=e36]
+            - paragraph [ref=e37]: Aukštesnis
+            - paragraph [ref=e38]: Refine your fluency. Explore complex grammar, idiomatic expressions, literature, and professional language use for work or academic contexts.
+    - region "Register for a Course" [ref=e39]:
+      - generic [ref=e40]:
+        - heading "Register for a Course" [level=2] [ref=e41]
+        - form "Course registration form" [ref=e42]:
+          - generic [ref=e43]:
+            - heading "Personal Information" [level=3] [ref=e44]
+            - generic [ref=e45]:
+              - generic [ref=e46]:
+                - generic [ref=e47]: First Name *
+                - textbox "First Name" [ref=e48]
+              - generic [ref=e49]:
+                - generic [ref=e50]: Last Name *
+                - textbox "Last Name" [ref=e51]
+              - generic [ref=e52]:
+                - generic [ref=e53]: Email *
+                - textbox "Email" [ref=e54]
+              - generic [ref=e55]:
+                - generic [ref=e56]: Phone *
+                - textbox "Phone" [ref=e57]:
+                  - /placeholder: +370 600 12345
+          - generic [ref=e58]:
+            - heading "Course Selection" [level=3] [ref=e59]
+            - generic [ref=e60]:
+              - generic [ref=e61]:
+                - generic [ref=e62]: Current Level *
+                - combobox "Current Level" [ref=e63] [cursor=pointer]:
+                  - option "Select your current level" [disabled] [selected]
+                  - option "Beginner (Pradedantysis)"
+                  - option "Intermediate (Pažengęs)"
+                  - option "Advanced (Aukštesnis)"
+              - generic [ref=e64]:
+                - generic [ref=e65]: Desired Level *
+                - combobox "Desired Level" [ref=e66] [cursor=pointer]:
+                  - option "Select your desired level" [disabled] [selected]
+                  - option "Beginner (Pradedantysis)"
+                  - option "Intermediate (Pažengęs)"
+                  - option "Advanced (Aukštesnis)"
+            - generic [ref=e67]:
+              - generic [ref=e68]:
+                - generic [ref=e69]: Teacher *
+                - combobox "Teacher" [disabled] [ref=e70]:
+                  - option "Select a teacher" [disabled] [selected]
+                - generic [ref=e71]: Please select your current and desired levels first.
+              - generic [ref=e72]:
+                - generic [ref=e73]: Start Date *
+                - combobox "Start Date" [disabled] [ref=e74]:
+                  - option "Select a start date" [disabled] [selected]
+                - generic [ref=e75]: Please select a teacher to see available start dates.
+          - button "Submit Registration" [ref=e76] [cursor=pointer]
+  - contentinfo [ref=e77]:
+    - generic [ref=e78]:
+      - generic [ref=e79]:
+        - heading "Contact Us" [level=2] [ref=e80]
+        - paragraph [ref=e81]:
+          - strong [ref=e82]: "Email:"
+          - link "info@lietuviskalba.lt" [ref=e83] [cursor=pointer]:
+            - /url: mailto:info@lietuviskalba.lt
+        - paragraph [ref=e84]:
+          - strong [ref=e85]: "Phone:"
+          - link "+370 5 234 5678" [ref=e86] [cursor=pointer]:
+            - /url: tel:+37052345678
+        - paragraph [ref=e87]: Gedimino pr. 9, Vilnius, LT-01103, Lithuania
+      - paragraph [ref=e89]:
+        - text: © 2026 Lietuvių Kalba Language School.
+        - text: All rights reserved.
+  - alert [ref=e90]
