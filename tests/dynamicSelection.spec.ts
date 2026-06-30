@@ -16,9 +16,7 @@
  *  - Submission is blocked when no teachers are available
  */
 
-import { test, expect } from '@playwright/test';
-import { LandingPage } from '../support/pages/LandingPage';
-import { RegistrationFormPage } from '../support/pages/RegistrationFormPage';
+import { test, expect } from '../support/fixtures';
 import {
     VALID_USER,
     TEACHERS_BY_COMBO,
@@ -27,39 +25,30 @@ import {
 } from '../support/helpers/testData';
 
 test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
-    let landing: LandingPage;
-    let form: RegistrationFormPage;
-
-    test.beforeEach(async ({ page }) => {
-        landing = new LandingPage(page);
-        form = new RegistrationFormPage(page);
-        await landing.navigate();
-        await landing.registrationSection.scrollIntoViewIfNeeded();
-    });
 
     // ── US3 AC1: Initial state — both selects disabled ────────────────────────
 
-    test('teacher dropdown is disabled on page load [US3-AC1, FR-007]', async () => {
+    test('teacher dropdown is disabled on page load [US3-AC1, FR-007]', async ({ form }) => {
         await expect(form.teacherSelect).toBeDisabled();
     });
 
-    test('teacher hint prompts user to select levels first [US3-AC1, FR-007]', async () => {
+    test('teacher hint prompts user to select levels first [US3-AC1, FR-007]', async ({ form }) => {
         await expect(form.teacherHint).toBeVisible();
         await expect(form.teacherHint).toContainText('Please select your current and desired levels first');
     });
 
-    test('date dropdown is disabled on page load', async () => {
+    test('date dropdown is disabled on page load', async ({ form }) => {
         await expect(form.dateSelect).toBeDisabled();
     });
 
-    test('date hint prompts user to select a teacher [FR-008]', async () => {
+    test('date hint prompts user to select a teacher [FR-008]', async ({ form }) => {
         await expect(form.dateHint).toBeVisible();
         await expect(form.dateHint).toContainText('Please select a teacher to see available start dates');
     });
 
     // ── US3 AC2: Teacher list refreshes when levels change ───────────────────
 
-    test('teacher list populates after both levels are chosen [US3-AC2, FR-007]', async () => {
+    test('teacher list populates after both levels are chosen [US3-AC2, FR-007]', async ({ form }) => {
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('intermediate');
 
@@ -69,23 +58,23 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
         );
     });
 
-    test('changing level combination updates the teacher list [US3-AC2, FR-007]', async () => {
+    test('changing level combination updates the teacher list [US3-AC2, FR-007]', async ({ form }) => {
         // First combination: beginner → beginner
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('beginner');
+        await expect(form.teacherOptions()).toHaveCount(TEACHERS_BY_COMBO['beginner→beginner'].length);
         const firstList = await form.teacherOptions().allTextContents();
 
         // Second combination: intermediate → advanced
         await form.selectCurrentLevel('intermediate');
         await form.selectDesiredLevel('advanced');
+        await expect(form.teacherOptions()).toHaveCount(TEACHERS_BY_COMBO['intermediate→advanced'].length);
         const secondList = await form.teacherOptions().allTextContents();
 
         expect(firstList).not.toEqual(secondList);
-        expect(firstList).toHaveLength(TEACHERS_BY_COMBO['beginner→beginner'].length);
-        expect(secondList).toHaveLength(TEACHERS_BY_COMBO['intermediate→advanced'].length);
     });
 
-    test('each level combination exposes the correct teacher names [US3-AC2, FR-007]', async () => {
+    test('each level combination exposes the correct teacher names [US3-AC2, FR-007]', async ({ form }) => {
         const combosToCheck: Array<[string, string, string]> = [
             ['beginner', 'beginner', 'beginner→beginner'],
             ['beginner', 'intermediate', 'beginner→intermediate'],
@@ -98,6 +87,7 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
             await form.selectCurrentLevel(from);
             await form.selectDesiredLevel(to);
 
+            await expect(form.teacherOptions()).toHaveCount(TEACHERS_BY_COMBO[key].length);
             const actualNames = await form.teacherOptions().allTextContents();
             for (const expected of TEACHERS_BY_COMBO[key]) {
                 expect(actualNames, `Combo ${key} should include ${expected}`).toContain(expected);
@@ -107,7 +97,7 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
 
     // ── US3 AC3: Date list resets and shows teacher-specific dates ────────────
 
-    test('date list populates after a teacher is selected [US3-AC3, FR-008]', async () => {
+    test('date list populates after a teacher is selected [US3-AC3, FR-008]', async ({ form }) => {
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('intermediate');
         await form.selectTeacher('ruta-kazlauskaite');
@@ -118,23 +108,23 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
         );
     });
 
-    test('changing teacher updates the date list [US3-AC3, FR-008]', async () => {
+    test('changing teacher updates the date list [US3-AC3, FR-008]', async ({ form }) => {
         // Select combo beginner → beginner and first teacher: Rūta (2 dates)
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('beginner');
         await form.selectTeacher('ruta-kazlauskaite');
+        await expect(form.dateOptions()).toHaveCount(START_DATES_BY_TEACHER['ruta-kazlauskaite'].length);
         const rutaDates = await form.dateOptions().allTextContents();
 
         // Switch to Viktorija (3 dates) within the same combo
         await form.selectTeacher('viktorija-stankeviciene');
+        await expect(form.dateOptions()).toHaveCount(START_DATES_BY_TEACHER['viktorija-stankeviciene'].length);
         const viktoriaDates = await form.dateOptions().allTextContents();
 
-        expect(rutaDates).toHaveLength(START_DATES_BY_TEACHER['ruta-kazlauskaite'].length);
-        expect(viktoriaDates).toHaveLength(START_DATES_BY_TEACHER['viktorija-stankeviciene'].length);
         expect(rutaDates).not.toEqual(viktoriaDates);
     });
 
-    test('date hint disappears once a teacher is selected [FR-008]', async () => {
+    test('date hint disappears once a teacher is selected [FR-008]', async ({ form }) => {
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('intermediate');
         await form.selectTeacher('ruta-kazlauskaite');
@@ -144,7 +134,7 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
 
     // ── US3 AC4: No matching teachers ────────────────────────────────────────
 
-    test('friendly "no teachers" hint is shown when combination has no match [US3-AC4, FR-007]', async () => {
+    test('friendly "no teachers" hint is shown when combination has no match [US3-AC4, FR-007]', async ({ form }) => {
         // beginner → advanced has no teachers in mock data
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('advanced');
@@ -153,7 +143,7 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
         await expect(form.teacherHint).toContainText('No teachers available for this combination');
     });
 
-    test('teacher dropdown stays disabled when no teachers match [US3-AC4, FR-007]', async () => {
+    test('teacher dropdown stays disabled when no teachers match [US3-AC4, FR-007]', async ({ form }) => {
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('advanced');
 
@@ -161,7 +151,7 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
     });
 
     for (const { currentLevelId, desiredLevelId } of NO_TEACHER_COMBOS) {
-        test(`no teacher hint shown for ${currentLevelId}→${desiredLevelId} [US3-AC4]`, async () => {
+        test(`no teacher hint shown for ${currentLevelId}→${desiredLevelId} [US3-AC4]`, async ({ form }) => {
             await form.selectCurrentLevel(currentLevelId);
             await form.selectDesiredLevel(desiredLevelId);
 
@@ -171,7 +161,7 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
 
     // ── Edge case: Level change resets teacher and date ───────────────────────
 
-    test('changing current level after teacher selection clears the teacher [edge case]', async () => {
+    test('changing current level after teacher selection clears the teacher [edge case]', async ({ form }) => {
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('intermediate');
         await form.selectTeacher('ruta-kazlauskaite');
@@ -184,7 +174,7 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
         await expect(form.dateSelect).toBeDisabled();
     });
 
-    test('changing desired level after teacher selection clears the teacher [edge case]', async () => {
+    test('changing desired level after teacher selection clears the teacher [edge case]', async ({ form }) => {
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('intermediate');
         await form.selectTeacher('ruta-kazlauskaite');
@@ -197,7 +187,7 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
         await expect(form.dateSelect).toBeDisabled();
     });
 
-    test('teacher hint reappears after level change clears teacher [edge case]', async () => {
+    test('teacher hint reappears after level change clears teacher [edge case]', async ({ form }) => {
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('intermediate');
         await form.selectTeacher('ruta-kazlauskaite');
@@ -210,7 +200,7 @@ test.describe('User Story 3 — Dynamic Teacher & Date Selection', () => {
 
     // ── Edge case: Submission blocked when no teachers available ──────────────
 
-    test('form submission is blocked when the level combination has no teachers [edge case, FR-009]', async () => {
+    test('form submission is blocked when the level combination has no teachers [edge case, FR-009]', async ({ form }) => {
         await form.fillPersonalInfo(VALID_USER);
         await form.selectCurrentLevel('beginner');
         await form.selectDesiredLevel('advanced'); // no teachers
